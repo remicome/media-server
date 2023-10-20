@@ -1,6 +1,7 @@
 - name: Install Transmission
   hosts: mediaservers
   remote_user: root
+  gather_facts: false
 
   tasks:
     - name: Install the latest version of transmission-daemon

@@ -1,6 +1,7 @@
 - name: Mount external hard-drive
   hosts: mediaservers
   remote_user: root
+  gather_facts: false
 
   tasks:
     - name: Create the mount point
