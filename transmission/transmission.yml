@@ -1,0 +1,36 @@
+- name: Install Transmission
+  hosts: mediaservers
+  remote_user: root
+
+  tasks:
+    - name: Install the latest version of transmission-daemon
+      ansible.builtin.apt:
+        name: transmission-daemon
+        state: latest
+        update_cache: yes
+
+    - name: Create the download directory
+      ansible.builtin.file:
+        path: '{{media}}/Downloads'
+        state: directory
+        mode: 0777
+
+    - name: Stop transmission-daemon
+      ansible.builtin.systemd:
+        name: transmission-daemon
+        state: stopped
+
+    - name: Copy the settings file
+      ansible.builtin.copy:
+          src: settings.json
+          dest: /etc/transmission-daemon/settings.json
+          owner: debian-transmission
+          group: debian-transmission
+          mode: '0600'
+
+    - name: Enable transmission-daemon
+      ansible.builtin.systemd:
+        name: transmission-daemon
+        state: started
+        enabled: true
+
