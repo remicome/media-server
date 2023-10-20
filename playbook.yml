@@ -1,17 +1,19 @@
 - name: Mount external hard-drive
   hosts: mediaservers
   remote_user: root
+  vars:
+    mount_point: /mnt/hdd
 
   tasks:
     - name: Create the mount point
       ansible.builtin.file:
-        path: /mnt/hdd
+        path: '{{mount_point}}'
         state: directory
         mode: 0777
 
     - name: Mount up device by UUID
       ansible.posix.mount:
-        path: /mnt/hdd
+        path: '{{mount_point}}'
         src: UUID=2dd783ff-d530-42ed-b90b-68b843a5a53a
         fstype: ext4
         opts: nofail,x-systemd.automount,x-systemd.device-timeout=5,x-systemd.idle-timeout=1min,noatime
