@@ -3,3 +3,6 @@
 
 - name: Install Transmission
   ansible.builtin.import_playbook: transmission/transmission.yml
+
+- name: Install Borg Backup
+  ansible.builtin.import_playbook: borgbackup/borgbackup.yml
