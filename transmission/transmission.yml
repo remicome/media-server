@@ -7,7 +7,7 @@
     - name: Install the latest version of transmission-daemon
       ansible.builtin.apt:
         name: transmission-daemon
-        state: latest
+        state: present
         update_cache: yes
 
     - name: Create the download directory

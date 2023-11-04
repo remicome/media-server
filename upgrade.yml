@@ -1,12 +1,10 @@
-- name: Install Borg Backup
+- name: Update all packages
   hosts: mediaservers
   remote_user: root
   gather_facts: false
 
   tasks:
-    - name: Install borg-backup
+    - name: Update and upgrade apt packages
       ansible.builtin.apt:
-        name: borgbackup
-        state: present
+        upgrade: yes
         update_cache: yes
-
