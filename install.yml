@@ -6,3 +6,6 @@
 
 - name: Install Borg Backup
   ansible.builtin.import_playbook: borgbackup/borgbackup.yml
+
+- name: Install Kodi
+  ansible.builtin.import_playbook: kodi/kodi.yml

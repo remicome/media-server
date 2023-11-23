@@ -1,0 +1,40 @@
+- name: Install Kodi
+  hosts: mediaservers
+  remote_user: root
+  gather_facts: false
+
+  tasks:
+    - name: Install the latest version of kodi
+      ansible.builtin.apt:
+        name: 
+          - kodi
+          - kodi-eventclients-kodi-send
+        state: present
+
+    - name: Create a dedicated user
+      ansible.builtin.user:
+        name: kodi
+        create_home: true
+        groups:
+          - audio
+          - video
+          - render
+
+    - name: Allow running openvt
+      community.general.sudoers:
+        name: kodi-run-openvt
+        state: present
+        user: kodi
+        runas: root
+        commands: /usr/bin/openvt
+
+    - name: Create the systemd unit
+      ansible.builtin.copy:
+          src: kodi.service
+          dest: /etc/systemd/system/kodi.service
+
+    - name: Start and enable the unit
+      ansible.builtin.systemd:
+          name: kodi
+          state: started
+          enabled: true

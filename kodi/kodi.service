@@ -1,0 +1,14 @@
+[Unit]
+Description=Kodi standalone
+After=network-online.target
+ 
+[Service]
+Type=simple
+User=kodi
+Group=kodi
+ExecStart=/usr/bin/kodi-standalone
+ExecStop=/usr/bin/kodi-send -a Quit
+ 
+[Install]
+WantedBy=multi-user.target
+
