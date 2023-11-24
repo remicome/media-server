@@ -14,8 +14,51 @@
         url: https://apt.mopidy.com/bullseye.list
         dest: /etc/apt/sources.list.d/mopidy.list
 
-    - name: Install mopidy
+    - name: Install packages
       ansible.builtin.apt:
         name: mopidy
         state: present
         update_cache: true
+
+    - name: Ensure pip and venv are present
+      ansible.builtin.apt:
+        name: 
+          - python3-pip
+          - python3-venv
+        state: present
+
+    - name: Install extensions
+      ansible.builtin.pip:
+        name:
+          - mopidy-iris
+          - mopidy-youtube
+          - ytmusicapi
+          - yt-dlp
+        state: present
+        virtualenv: /var/lib/mopidy/venv
+        virtualenv_command: /usr/bin/python3 -m venv
+        virtualenv_site_packages: true
+
+    - name: Create the configuration directory
+      ansible.builtin.file:
+          path: /var/lib/mopidy/.config/mopidy
+          state: directory
+          owner: mopidy
+
+    - name: Configure
+      ansible.builtin.copy:
+          src: resources/mopidy.conf
+          dest: /var/lib/mopidy/.config/mopidy/mopidy.conf
+          owner: mopidy
+
+    - name: Setup the systemd unit
+      ansible.builtin.copy:
+          src: resources/mopidy.service
+          dest: /etc/systemd/system/mopidy.service
+
+    - name: Enable systemd
+      ansible.builtin.systemd:
+        name: mopidy
+        state: started
+        enabled: true
+        daemon_reload: true
