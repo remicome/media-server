@@ -9,3 +9,6 @@
 
 - name: Install Kodi
   ansible.builtin.import_playbook: kodi/kodi.yml
+
+- name: Install Mopidy
+  ansible.builtin.import_playbook: mopidy/mopidy.yml

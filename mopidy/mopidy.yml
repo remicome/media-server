@@ -1,0 +1,21 @@
+- name: Install Mopidy
+  hosts: mediaservers
+  remote_user: root
+  gather_facts: false
+
+  tasks:
+    - name: Download the GPG key
+      ansible.builtin.get_url:
+        url: https://apt.mopidy.com/mopidy.gpg
+        dest: /etc/apt/keyrings/mopidy-archive-keyring.gpg
+
+    - name: Add the APT repo
+      ansible.builtin.get_url:
+        url: https://apt.mopidy.com/bullseye.list
+        dest: /etc/apt/sources.list.d/mopidy.list
+
+    - name: Install mopidy
+      ansible.builtin.apt:
+        name: mopidy
+        state: present
+        update_cache: true
