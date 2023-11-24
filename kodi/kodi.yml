@@ -20,13 +20,25 @@
           - video
           - render
 
-    - name: Allow running openvt
+    - name: Allow running openvt as root
       community.general.sudoers:
         name: kodi-run-openvt
         state: present
         user: kodi
         runas: root
         commands: /usr/bin/openvt
+
+    - name: Ensure userdata directory is present
+      ansible.builtin.file:
+        path: /home/kodi/.kodi/userdata
+        state: directory
+        owner: kodi
+        group: kodi
+
+    - name: Enable the Web interface
+      ansible.builtin.copy:
+          src: advancedsettings.xml
+          dest: /home/kodi/.kodi/userdata/advancedsettings.xml
 
     - name: Create the systemd unit
       ansible.builtin.copy:
