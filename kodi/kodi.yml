@@ -30,7 +30,7 @@
 
     - name: Create the systemd unit
       ansible.builtin.copy:
-          src: kodi.service
+          src: resources/kodi.service
           dest: /etc/systemd/system/kodi.service
 
     - name: Start and enable the unit
